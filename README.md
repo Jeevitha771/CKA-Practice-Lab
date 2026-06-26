@@ -14,6 +14,7 @@ CKA-Practice-Lab/
 ├── Resource-Management/   # Q67–Q70, Q74
 ├── Scheduling/            # Q71–Q73
 ├── Manifest-Management/   # Q75–Q79
+├── Networking/            # Q80–Q84
 └── Storage/               # Q119–Q136
 ```
 
@@ -94,6 +95,15 @@ CKA-Practice-Lab/
 | Q77 | kubectl dry-run=client vs dry-run=server — validation difference |
 | Q78 | kubectl diff to preview changes before applying |
 | Q79 | Kustomize: manage dev/staging/prod configs with base + overlays |
+
+### Networking
+| File | Topic |
+|---|---|
+| Q80 | Document cluster network config: CNI plugin, Pod CIDR, Service CIDR, DNS IP |
+| Q81 | Debug CNI — pod cannot reach other pods: check plugin, routes, connectivity |
+| Q82 | Pod with hostNetwork=true — verify node IP, security implications, use cases |
+| Q83 | Verify IP forwarding and br_netfilter module — fix if missing |
+| Q84 | Configure pod for specific network interface on multi-homed node |
 
 ### Storage (PV / PVC / Volumes)
 | File | Topic |
