@@ -105,6 +105,7 @@ CKA-Practice-Lab/
 | Q83 | Verify IP forwarding and br_netfilter module — fix if missing |
 | Q84 | Configure pod for specific network interface on multi-homed node |
 | 📖 CONCEPTS | Advanced Networking deep dive: multi-homed nodes, overlay vs direct routing, Services internals (DNAT, conntrack, iptables/IPVS/eBPF), DNS flow end-to-end |
+| 📖 CONCEPTS | Linux Networking Fundamentals: pause container, veth pairs, bridges, Pod CIDR, CNI internals, kube-proxy, conntrack, CoreDNS DNS flow, flat network & NetworkPolicy |
 
 ### Storage (PV / PVC / Volumes)
 | File | Topic |
