@@ -104,6 +104,7 @@ CKA-Practice-Lab/
 | Q82 | Pod with hostNetwork=true — verify node IP, security implications, use cases |
 | Q83 | Verify IP forwarding and br_netfilter module — fix if missing |
 | Q84 | Configure pod for specific network interface on multi-homed node |
+| 📖 CONCEPTS | Advanced Networking deep dive: multi-homed nodes, overlay vs direct routing, Services internals (DNAT, conntrack, iptables/IPVS/eBPF), DNS flow end-to-end |
 
 ### Storage (PV / PVC / Volumes)
 | File | Topic |
