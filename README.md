@@ -2,6 +2,13 @@
 
 A structured collection of CKA (Certified Kubernetes Administrator) practice questions with solutions, organized by topic.
 
+## 🚀 Start Here
+
+| File | Description |
+|---|---|
+| 📋 **[CKA-Master-Commands-Cheatsheet.md](CKA-Master-Commands-Cheatsheet.md)** | **All commands in one file** — 18 sections, exam-ready reference |
+| 📄 **[CKA_Exam_Practice_Questions.pdf](CKA_Exam_Practice_Questions.pdf)** | 190 exam-simulated questions (Kubernetes v1.28+) |
+
 ## 📁 Folder Structure
 
 ```
