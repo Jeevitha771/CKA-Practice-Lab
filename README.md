@@ -6,11 +6,18 @@ A structured collection of CKA (Certified Kubernetes Administrator) practice que
 
 ```
 CKA-Practice-Lab/
-├── Deployments/          # Q1–Q3, Q41–Q45
-├── ConfigMaps-Secrets/   # Q46–Q52
-├── Scaling/              # Q53–Q58
-└── Storage/              # Q119–Q136
+├── Deployments/           # Q1–Q3, Q41–Q45
+├── ConfigMaps-Secrets/    # Q46–Q52
+├── Scaling/               # Q53–Q58
+├── Probes-DaemonSets/     # Q59–Q66
+├── Jobs-CronJobs/         # Q62–Q63
+├── Resource-Management/   # Q67–Q70, Q74
+├── Scheduling/            # Q71–Q73
+├── Manifest-Management/   # Q75–Q79
+└── Storage/               # Q119–Q136
 ```
+
+---
 
 ## 📋 Question Index
 
@@ -37,7 +44,7 @@ CKA-Practice-Lab/
 | Q51 | Debug pod failing due to missing ConfigMap |
 | Q52 | Create immutable ConfigMap and Secret |
 
-### Scaling
+### Scaling & Autoscaling
 | File | Topic |
 |---|---|
 | Q53 | Scale deployment from 3 to 8 replicas, verify endpoints |
@@ -47,7 +54,48 @@ CKA-Practice-Lab/
 | Q57 | Debug HPA not scaling — metrics server, resource requests |
 | Q58 | VerticalPodAutoscaler — update modes and resource policies |
 
-### Storage
+### Probes, DaemonSets & Init Containers
+| File | Topic |
+|---|---|
+| Q59 | Deployment with liveness, readiness, and startup probes |
+| Q60 | Init container waiting for database service on port 5432 |
+| Q61 | DaemonSet on all nodes including control plane (hostNetwork, hostPID) |
+| Q64 | Debug pod restarting due to failed liveness probes — fix config |
+| Q65 | StatefulSet with Parallel pod management and RollingUpdate partition |
+| Q66 | Pod with multiple sequential init containers |
+
+### Jobs & CronJobs
+| File | Topic |
+|---|---|
+| Q62 | Job: 10 completions, 3 parallel, backoffLimit 4, deadline 600s |
+| Q63 | CronJob: daily 2AM backup, Forbid concurrency, history limits |
+
+### Resource Management
+| File | Topic |
+|---|---|
+| Q67 | Namespace `limited` with ResourceQuota (CPU, memory, pods, services, PVCs) |
+| Q68 | LimitRange in namespace `dev` with defaults, min, max |
+| Q69 | Debug pod pending "Insufficient cpu" — investigate and resolve |
+| Q70 | Calculate if pod can schedule on node (capacity math) |
+| Q74 | Pod with requests and limits for CPU, memory, and ephemeral storage |
+
+### Scheduling
+| File | Topic |
+|---|---|
+| Q71 | PriorityClass `high-priority` value=1000, pod using it |
+| Q72 | Pod affinity: prefer SSD nodes, require same zone, anti-affinity |
+| Q73 | Taints and Tolerations: NoSchedule, NoExecute, tolerationSeconds |
+
+### Manifest Management
+| File | Topic |
+|---|---|
+| Q75 | Convert imperative command to YAML |
+| Q76 | Generate YAML (dry-run) for Deployment, Service, ConfigMap |
+| Q77 | kubectl dry-run=client vs dry-run=server — validation difference |
+| Q78 | kubectl diff to preview changes before applying |
+| Q79 | Kustomize: manage dev/staging/prod configs with base + overlays |
+
+### Storage (PV / PVC / Volumes)
 | File | Topic |
 |---|---|
 | Q119 | Create PersistentVolume with hostPath, manual StorageClass, Retain policy |
