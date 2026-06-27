@@ -149,6 +149,8 @@ Session affinity means requests from the same client IP always go to the same po
 # Run a temporary client pod
 kubectl run client --image=busybox:1.28 --rm -it -- sh
 ```
+NOTE: In above command, The --rm flag stands for remove.
+When you combine --rm with an interactive shell session (-it -- sh), it tells Kubernetes to automatically delete the pod as soon as you exit the terminal.
 
 Inside the shell, hit the service multiple times and observe the response:
 
@@ -157,6 +159,10 @@ Inside the shell, hit the service multiple times and observe the response:
 for i in $(seq 1 6); do
   wget -qO- 10.96.x.x:8080 2>/dev/null | grep "Server name"
 done
+
+or
+
+while true; do wget -q -O- http://backend-service:8080; sleep 1; done
 ```
 
 Expected output (same pod hostname repeating):
