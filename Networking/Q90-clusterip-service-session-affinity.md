@@ -19,6 +19,7 @@ kubectl create deployment backend --image=nginx --replicas=3
 kubectl label deployment backend tier=api
 kubectl label pods -l app=backend tier=api
 ```
+NOTE: The Trap: Because Deployments are self-healing, if you delete one of these pods (or a node crashes), the ReplicaSet will immediately spin up a new pod using the original Pod Template. Because the template was never updated, the new pod will only have app=backend and will be missing tier=api.
 
 > **Why:** A service with a selector but no matching pods will have empty endpoints —
 > it won't route any traffic. The deployment gives us real targets to verify against.
