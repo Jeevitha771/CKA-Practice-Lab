@@ -1,4 +1,4 @@
-cat << 'EOF' > k8s-services-explained.md
+
 # The Core Difference: Who Handles the Traffic?
 
 > [NodePort Approach]
