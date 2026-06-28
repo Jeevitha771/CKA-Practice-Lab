@@ -33,7 +33,16 @@ External database server (192.168.1.100:5432)
 
 This guide explains how to properly route traffic from a Kubernetes cluster to an external database using `Service` and `EndpointSlice` resources, including how to troubleshoot common connection issues and set up a "clean slate" demonstration environment.
 
-## 1. The Port Name "Gotcha"
+## Create the Mock External Environment
+> kubectl create namespace outside-world
+kubectl run mock-db -n outside-world --image=postgres:15-alpine --env="POSTGRES_PASSWORD=demo"
+## Grab the "External" IP Address
+> kubectl get pod mock-db -n outside-world -o wide
+(Assume the IP returned under the IP column is 10.244.1.15)
+
+Switch back to your default namespace and apply your resources using the IP you just retrieved.
+
+## The Port Name "Gotcha"
 
 When linking an `EndpointSlice` to a `Service`, port names are optional **but strictly enforced if used**.
 
@@ -76,10 +85,11 @@ endpoints:
 
 
 ## Verify the SetUp:
+> 
 > kubectl run db-test --image=busybox:1.28 --rm -it -- sh
 
 > # Inside the busybox shell:
-/ # nc -zv external-db 5432
+>  nc -zv external-db 5432
 
 > Pods now connect to `external-db:5432` exactly as if it were an internal service.
 > The actual traffic is forwarded to `192.168.1.100:5432` transparently.
