@@ -66,7 +66,7 @@ metadata:
   name: external-db-service-1 # Can be named anything, usually suffixed with a number
   labels:
     # THIS IS THE CRUCIAL LINK TO YOUR SERVICE
-    kubernetes.io/service-name: external-db-service 
+    kubernetes.io/service-name: external-db
 addressType: IPv4
 ports:
   - name: mysql          # Must match the port name in the Service
