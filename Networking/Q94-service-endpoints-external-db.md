@@ -111,7 +111,7 @@ Open a new terminal or run this right after the previous command finishes:
 **What you will see:**
 At the very bottom of the logs, PostgreSQL will complain about receiving a weird packet:
 > LOG:  invalid length of startup packet
-# or
+**or**
 > LOG:  incomplete startup packet
 
 ## Alternative: ExternalName Service
