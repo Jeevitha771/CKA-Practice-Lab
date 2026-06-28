@@ -32,7 +32,7 @@ NOTE: The Trap: Because Deployments are self-healing, if you delete one of these
 
 ```bash
 kubectl create service clusterip backend-service \
-  --tcp=8080:8080 \
+  --tcp=8080:80\
   --dry-run=client -o yaml > backend-service.yaml
 ```
 
@@ -57,7 +57,7 @@ spec:
   ports:
   - protocol: TCP
     port: 8080
-    targetPort: 8080
+    targetPort: 80
   sessionAffinity: ClientIP
   sessionAffinityConfig:
     clientIP:
@@ -144,6 +144,13 @@ backend-service   10.244.0.5:8080,10.244.1.3:8080,10.244.2.2:8080  30s
 ## Phase 5: Verify Session Affinity Works
 
 Session affinity means requests from the same client IP always go to the same pod.
+We need to change the default Nginx index.html page in each pod to display its own unique hostname. Run this command on your control plane to loop through your backend pods and overwrite their HTML files:
+
+```bash
+for pod in $(kubectl get pods -l app=backend,tier=api -o jsonpath='{.items[*].metadata.name}'); do
+  kubectl exec $pod -- sh -c 'echo "Server name: $(hostname)" > /usr/share/nginx/html/index.html'
+done
+```
 
 ```bash
 # Run a temporary client pod
