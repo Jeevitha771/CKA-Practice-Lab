@@ -1,6 +1,5 @@
-This is a great, well-structured set of notes! You've captured all the technical commands and outcomes perfectly.
-
-To explain this in plain English, this whole concept boils down to one major networking problem in Kubernetes: **How do we get traffic from the outside world to a pod, and does the pod know who originally sent the traffic?**
+This whole concept boils down to one major networking problem in Kubernetes:
+**How do we get traffic from the outside world to a pod, and does the pod know who originally sent the traffic?**
 
 Here is a simplified breakdown of exactly what your notes are demonstrating.
 
