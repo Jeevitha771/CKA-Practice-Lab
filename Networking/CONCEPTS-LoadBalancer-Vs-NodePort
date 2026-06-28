@@ -4,7 +4,7 @@ The easiest way to understand the difference is to realize that they aren't enti
 
 # The Core Difference: Who Handles the Traffic?
 
-[NodePort Approach]
+> [NodePort Approach]
 User Request ---> http://<Any-Worker-Node-IP>:31452 ---> Pod (Port 8443)
 
 [LoadBalancer Approach]
