@@ -72,6 +72,9 @@ ports:
 endpoints:
   - addresses:
       - "192.168.1.100" # Your external IP
+
+
+
 ## Verify the SetUp:
 > kubectl run db-test --image=busybox:1.28 --rm -it -- sh
 
