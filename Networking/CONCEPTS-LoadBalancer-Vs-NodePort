@@ -3,6 +3,11 @@ That is exactly the right question to ask, especially as you dive deeper into ad
 The easiest way to understand the difference is to realize that they aren't entirely separate concepts: **a `LoadBalancer` service actually builds *on top* of a `NodePort`.** Here is the breakdown of how they differ and why you would choose one over the other.
 
 ### **The Core Difference: Who Handles the Traffic?**
+[NodePort Approach]
+User Request ---> http://<Any-Worker-Node-IP>:31452 ---> Pod (Port 8443)
+
+[LoadBalancer Approach]
+User Request ---> https://<External-IP-or-DNS>:443 ---> Cloud Balancer ---> Worker Nodes (Port 31452) ---> Pod (Port 8443)
 
 **1. NodePort: The DIY Approach**
 
