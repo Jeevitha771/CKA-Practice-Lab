@@ -71,8 +71,7 @@ ports:
     # No name field here either. Note the '-' making it a list item!
 endpoints:
   - addresses:
-      - "192.168.1.100" # Your external IP
-
+      - "192.168.1.100" # Your external IP ```
 
 
 ## Verify the SetUp:
