@@ -152,6 +152,8 @@ Connection to external-db 5432 port [tcp/postgresql] succeeded!
 ## Alternative: ExternalName Service
 For DNS-based external services (when you have a hostname instead of an IP):
 > kubectl create service externalname my-ns --external-name bar.com
+
+
 or
 ```bash
 cat <<EOF | kubectl apply -f -
