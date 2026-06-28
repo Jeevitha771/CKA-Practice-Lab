@@ -35,7 +35,8 @@ This guide explains how to properly route traffic from a Kubernetes cluster to a
 
 ## Create the Mock External Environment
 > kubectl create namespace outside-world
-kubectl run mock-db -n outside-world --image=postgres:15-alpine --env="POSTGRES_PASSWORD=demo"
+
+> kubectl run mock-db -n outside-world --image=postgres:15-alpine --env="POSTGRES_PASSWORD=demo"
 ## Grab the "External" IP Address
 > kubectl get pod mock-db -n outside-world -o wide
 (Assume the IP returned under the IP column is 10.244.1.15)
