@@ -54,7 +54,33 @@ EOF
 ---
 
 ## Phase 2: Create the Endpoints Object
+**NEW Approach:**
+Create an EndpointSlice object.
+Crucial Rule: Unlike the old API that relied on identical names, EndpointSlice links to your Service using a specific label: kubernetes.io/service-name.
+**Create a file named external-db-endpointslice.yaml:**
 
+```bash
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: external-db-service-1 # Can be named anything, usually suffixed with a number
+  labels:
+    # THIS IS THE CRUCIAL LINK TO YOUR SERVICE
+    kubernetes.io/service-name: external-db-service 
+addressType: IPv4
+ports:
+  - name: mysql          # Must match the port name in the Service
+    protocol: TCP
+    port: 3306
+endpoints:
+  - addresses:
+      - "198.51.100.24"  # The actual IP address of your external database
+```
+**Apply it:**
+
+> kubectl apply -f external-db-endpointslice.yaml
+
+**OLD Approach:**
 The Endpoints object must have the **same name** as the Service.
 
 ```bash
@@ -191,6 +217,13 @@ kubectl get endpoints external-db
 # Test from inside cluster
 kubectl run test --image=busybox:1.28 --rm -it -- nc -zv external-db 5432
 ```
+## Why is this so useful? (The Benefit)
+
+Clean Configuration: Your application deployment inside Kubernetes simply connects to external-db-service on port 3306. It doesn't know (or care) that the database is external.
+
+Easy Migrations: If you ever migrate that database to a different external server (meaning the IP changes), you do not need to restart your application or change its environment variables. You simply update the IP address in the EndpointSlice YAML and apply it. Kubernetes instantly redirects the traffic.
+
+Bringing it In-House: If you eventually decide to move the database inside the Kubernetes cluster, you just delete the manual EndpointSlice, add a selector to the Service, and it seamlessly connects to your new database Pods without your app ever knowing.
 
 ---
 
