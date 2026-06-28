@@ -71,10 +71,10 @@ addressType: IPv4
 ports:
   - name: mysql          # Must match the port name in the Service
     protocol: TCP
-    port: 3306
+    port: 5432
 endpoints:
   - addresses:
-      - "198.51.100.24"  # The actual IP address of your external database
+      - "192.168.1.100"  # The actual IP address of your external database
 ```
 **Apply it:**
 
