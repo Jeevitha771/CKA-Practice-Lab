@@ -29,11 +29,23 @@ External database server (192.168.1.100:5432)
 ```
 
 ---
+# Troubleshooting Kubernetes EndpointSlices for External Services
 
-## Phase 1: Create the Service (No Selector)
+This guide explains how to properly route traffic from a Kubernetes cluster to an external database using `Service` and `EndpointSlice` resources, including how to troubleshoot common connection issues and set up a "clean slate" demonstration environment.
 
-```bash
-cat <<EOF | kubectl apply -f -
+## 1. The Port Name "Gotcha"
+
+When linking an `EndpointSlice` to a `Service`, port names are optional **but strictly enforced if used**.
+
+* **Single Port:** If your Service only exposes one port, you do not need to name it.
+* **The Rule:** If you provide a `name` for a port in your `EndpointSlice` (e.g., `name: mysql`), it **must exactly match** a named port in your `Service`. 
+
+If your Service has an unnamed port and your EndpointSlice has a named port, `kube-proxy` will fail to map the endpoints, and traffic will not route.
+
+### Correct YAML Structure (Unnamed Ports)
+
+```yaml
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -44,131 +56,27 @@ spec:
   - protocol: TCP
     port: 5432
     targetPort: 5432
-  # Note: NO selector field — endpoints are managed manually
-EOF
-```
-
-> Without a `selector`, Kubernetes will **not** auto-populate the Endpoints object.
-> The service gets a ClusterIP but has no endpoints until we add them manually.
-
+    # No name field here
 ---
-
-## Phase 2: Create the Endpoints Object
-**NEW Approach:**
-Create an EndpointSlice object.
-Crucial Rule: Unlike the old API that relied on identical names, EndpointSlice links to your Service using a specific label: kubernetes.io/service-name.
-**Create a file named external-db-endpointslice.yaml:**
-
-```bash
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
 metadata:
-  name: external-db-service-1 # Can be named anything, usually suffixed with a number
+  name: external-db-service-1
   labels:
-    # THIS IS THE CRUCIAL LINK TO YOUR SERVICE
     kubernetes.io/service-name: external-db
 addressType: IPv4
 ports:
-  - name: mysql          # Must match the port name in the Service
-    protocol: TCP
+  - protocol: TCP
     port: 5432
+    # No name field here either. Note the '-' making it a list item!
 endpoints:
   - addresses:
-      - "192.168.1.100"  # The actual IP address of your external database
-```
-**Apply it:**
+      - "192.168.1.100" # Your external IP
+## Verify the SetUp:
+> kubectl run db-test --image=busybox:1.28 --rm -it -- sh
 
-> kubectl apply -f external-db-endpointslice.yaml
-
-**OLD Approach:**
-The Endpoints object must have the **same name** as the Service.
-
-```bash
-cat <<EOF | kubectl apply -f -
-apiVersion: v1
-kind: Endpoints
-metadata:
-  name: external-db     # Must exactly match the Service name
-subsets:
-- addresses:
-  - ip: 192.168.1.100   # External database server IP
-  ports:
-  - port: 5432
-    protocol: TCP
-EOF
-```
-
-> ⚠️ The `metadata.name` of Endpoints **must** match the Service name exactly.
-> Kubernetes links them by name — not by any label or reference field.
-
----
-
-## Phase 3: Verify
-
-### Check service
-
-```bash
-kubectl get service external-db
-```
-
-```
-NAME          TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)    AGE
-external-db   ClusterIP   10.96.x.x     <none>        5432/TCP   20s
-```
-
-### Check endpoints
-
-```bash
-kubectl get endpoints external-db
-```
-
-```
-NAME          ENDPOINTS             AGE
-external-db   192.168.1.100:5432    20s
-```
-
-> Unlike selector-based services, these endpoints won't change — Kubernetes doesn't
-> manage them. You are responsible for keeping the Endpoints object updated.
-
-### Describe for full details
-
-```bash
-kubectl describe endpoints external-db
-```
-
-```
-Name:         external-db
-Namespace:    default
-Subsets:
-  Addresses: 192.168.1.100
-  Ports:
-    Port: 5432/TCP
-```
-
----
-
-## Phase 4: Test Connectivity from Inside the Cluster
-
-```bash
-kubectl run db-test --image=busybox:1.28 --rm -it -- sh
-```
-
-Inside the shell:
-
-```sh
-# Test DNS resolution (service name → ClusterIP)
-nslookup external-db
-
-# Test TCP connectivity to the external server via the service
-# (requires nc / telnet — busybox has nc)
-nc -zv external-db 5432
-```
-
-Expected:
-```
-external-db.default.svc.cluster.local resolved to 10.96.x.x
-Connection to external-db 5432 port [tcp/postgresql] succeeded!
-```
+> # Inside the busybox shell:
+/ # nc -zv external-db 5432
 
 > Pods now connect to `external-db:5432` exactly as if it were an internal service.
 > The actual traffic is forwarded to `192.168.1.100:5432` transparently.
