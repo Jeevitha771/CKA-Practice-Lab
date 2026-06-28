@@ -96,6 +96,23 @@ endpoints:
 > The actual traffic is forwarded to `192.168.1.100:5432` transparently.
 
 ---
+## Verification whether request reached the pod from service?
+**The "Bad Packet" Trick (Fastest)**
+
+Since you already know how to use busybox and nc, we can intentionally send a junk message to the PostgreSQL database. The database will reject it, but it will log the error, proving the traffic arrived!
+
+**1. Send junk data from your test pod:**
+> kubectl run db-test --image=busybox:1.28 --rm -it -- sh -c 'echo "HELLO-FROM-KUBERNETES" | nc external-db 5432'
+
+**2. Check the logs of your mock-db pod:**
+Open a new terminal or run this right after the previous command finishes:
+> kubectl logs mock-db -n outside-world
+
+**What you will see:**
+At the very bottom of the logs, PostgreSQL will complain about receiving a weird packet:
+> LOG:  invalid length of startup packet
+# or
+> LOG:  incomplete startup packet
 
 ## Alternative: ExternalName Service
 For DNS-based external services (when you have a hostname instead of an IP):
@@ -148,6 +165,7 @@ Easy Migrations: If you ever migrate that database to a different external serve
 Bringing it In-House: If you eventually decide to move the database inside the Kubernetes cluster, you just delete the manual EndpointSlice, add a selector to the Service, and it seamlessly connects to your new database Pods without your app ever knowing.
 
 ---
+
 
 ## Cleanup
 
