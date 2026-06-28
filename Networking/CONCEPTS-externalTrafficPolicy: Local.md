@@ -31,7 +31,3 @@ When you apply this policy, you are telling Kubernetes to prioritize **preservin
 You might be thinking, *"Wait, dropping traffic is bad!"* It is, but when you use `Local` mode on AWS, GCP, or Azure, the Cloud Load Balancer checks the "health" of every single node before sending traffic. Because Node C drops local traffic, the Load Balancer marks Node C as "unhealthy" for this specific service. It will then *only* route external internet traffic to Node A and Node B, completely avoiding the dropped traffic issue.
 
 ---
-
-### Interactive Visualization
-
-To help solidify how packets flow and how the Source IP changes (or doesn't), I've generated an interactive simulator below. You can toggle between the two policies and send traffic to different nodes to see exactly how Kubernetes routes it.
