@@ -1,4 +1,4 @@
-# Q104. Ingress with Default Backend for Custom 404 Page
+﻿# Q104. Ingress with Default Backend for Custom 404 Page
 
 ## Task
 Create an Ingress with a default backend that serves a custom 404 page
@@ -9,144 +9,134 @@ when no routing rules match the incoming request.
 
 ---
 
-## Phase 1: Create the Custom 404 Backend
+This is a fantastic demonstration to run for students. Teaching Ingress in a completely open environment (like a raw Minikube cluster, kind, or bare-metal setup) is challenging because **Kubernetes does not come with an Ingress Controller out of the box.** If a student tries to create an Ingress resource without a controller running, absolutely nothing will happen.
 
-```bash
-# Create a custom 404 deployment (serves a custom error page)
-cat <<EOF | kubectl apply -f -
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: custom-404
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: custom-404
-  template:
-    metadata:
-      labels:
-        app: custom-404
-    spec:
-      containers:
-      - name: nginx
-        image: nginx
-        # In a real scenario you'd mount a ConfigMap with a custom 404 HTML page
-EOF
-```
-
-```bash
-kubectl expose deployment custom-404 --name=custom-404-svc --port=80
-```
+Here is the complete, end-to-end solution to build and demonstrate a custom 404 default backend from scratch.
 
 ---
 
-## Phase 2: Create the Main Application
+### Step 1: Install the NGINX Ingress Controller
+
+In an open environment, you must install a controller first so the cluster knows how to process Ingress resources.
+
+Run this command to install the official NGINX Ingress Controller:
 
 ```bash
-kubectl create deployment mainapp --image=nginx
-kubectl expose deployment mainapp --name=mainapp-svc --port=80
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/cloud/deploy.yaml
+
 ```
 
----
-
-## Phase 3: Create Ingress with Default Backend
+*Wait a few moments and verify the controller pod is running:*
 
 ```bash
-cat <<EOF | kubectl apply -f -
+kubectl get pods -n ingress-nginx
+
+```
+
+### Step 2: Create the "Custom 404" Application
+
+For a live demonstration, it is best to use a lightweight image that outputs a clear, custom text message so students immediately know it worked. We will use `hashicorp/http-echo` for this.
+
+Run these imperative commands to create the 404 Pod and expose it via a Service:
+
+```bash
+# 1. Create the backend pod that outputs our custom error message
+kubectl run custom-404 --image=hashicorp/http-echo --port=5678 -- -text="CUSTOM 404 ERROR: The page you are looking for does not exist in this cluster."
+
+# 2. Expose it internally on port 80
+kubectl expose pod custom-404 --name=custom-404-svc --port=80 --target-port=5678
+
+```
+
+### Step 3: Create a "Main" Application
+
+To prove the Ingress works properly, we need a normal application to route valid traffic to. We will use standard NGINX.
+
+```bash
+# 1. Create the main app pod
+kubectl run main-app --image=nginx --port=80
+
+# 2. Expose it
+kubectl expose pod main-app --name=main-app-svc --port=80
+
+```
+
+### Step 4: Create the Ingress Resource
+
+Now we tie it all together. The secret to this requirement is the `defaultBackend` field. By placing it at the root of the `spec` (outside of the `rules` array), you are telling the Ingress controller: *"If the user asks for a path that is not defined in my rules, send them here."*
+
+Create a file named `ingress-404.yaml`:
+
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: default-backend-ingress
+  name: demo-ingress
 spec:
   ingressClassName: nginx
-  # Default backend: serves when NO rules match
+  # ----------------------------------------------------
+  # THE SOLUTION: This catches all unmatched traffic
+  # ----------------------------------------------------
   defaultBackend:
     service:
       name: custom-404-svc
       port:
         number: 80
+  # ----------------------------------------------------
   rules:
-  - host: app.example.com
+  - host: demo.local
     http:
       paths:
-      - path: /
+      - path: /app
         pathType: Prefix
         backend:
           service:
-            name: mainapp-svc
+            name: main-app-svc
             port:
               number: 80
-EOF
+
 ```
 
-**Key field:**
-
-| Field | Purpose |
-|---|---|
-| `spec.defaultBackend` | Catches all requests that don't match any rule |
-| `spec.rules` | Normal routing rules (matched first) |
-
-**Traffic flow:**
-```
-Request: Host=app.example.com, path=/   → mainapp-svc:80
-Request: Host=unknown.com, path=/       → custom-404-svc:80 (default backend)
-Request: Host=app.example.com, path=/xyz → custom-404-svc:80 (no matching path rule)
-```
-
----
-
-## Phase 4: Verify
+Apply the configuration:
 
 ```bash
-kubectl describe ingress default-backend-ingress
-```
+kubectl apply -f ingress-404.yaml
 
 ```
-Default backend: custom-404-svc:80 (10.244.x.x:80)
-Rules:
-  Host             Path  Backends
-  app.example.com  /     mainapp-svc:80
-```
+The Fix: You need to tell the Ingress Controller to rewrite the path to / before sending it to the pod. Run this command to add the rewrite annotation:
+Bash
 
----
+> kubectl annotate ingress demo-ingress nginx.ingress.kubernetes.io/rewrite-target="/"
 
-## Phase 5: Test
+Now, if you run curl -H "Host: demo.local" http://$INGRESS_IP/app, the Ingress will strip /app, send / to the pod, and you will see the "Welcome to nginx!" HTML.
+
+### Step 5: Test and Demonstrate
+
+```markdown
+# Testing Ingress Default Backend (Custom 404)
+
+Since you are testing inside the Killercoda shell, the easiest way to test routing without modifying DNS or `/etc/hosts` is to send requests directly to the Ingress Controller's internal IP address while manually passing the `Host` header.
+
+## 1. Get the Ingress Controller IP
+First, save the Ingress Controller's ClusterIP to an environment variable so the testing commands are clean and easy to read.
 
 ```bash
-HTTP_PORT=$(kubectl get svc ingress-nginx-controller -n ingress-nginx \
-  -o jsonpath='{.spec.ports[?(@.name=="http")].nodePort}')
-NODE_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[0].address}')
+INGRESS_IP=$(kubectl get svc ingress-nginx-controller -n ingress-nginx -o jsonpath='{.spec.clusterIP}')
 
-# Known host/path → mainapp
-curl -H "Host: app.example.com" http://$NODE_IP:$HTTP_PORT/
-# → 200 OK from mainapp
-
-# Unknown host → default backend (custom 404)
-curl -H "Host: unknown.example.com" http://$NODE_IP:$HTTP_PORT/
-# → 200 OK from custom-404 backend (serving custom error page)
 ```
 
----
+## 2. Test the Valid Route (Main App)
 
-## Summary: Quick Reference
+Send a request to the exact host (`demo.local`) and path (`/app`) defined in your Ingress rules.
 
 ```bash
-# defaultBackend sits at spec level (not under rules)
-spec:
-  defaultBackend:
-    service:
-      name: custom-404-svc
-      port:
-        number: 80
+curl -H "Host: demo.local" http://$INGRESS_IP/app
+
 ```
 
----
+**Expected Output:**
+You should see the raw HTML of the default "Welcome to nginx!" page. This proves your primary routing rule is working perfectly.
 
-## Cleanup
+```
 
-```bash
-kubectl delete ingress default-backend-ingress
-kubectl delete svc custom-404-svc mainapp-svc
-kubectl delete deployment custom-404 mainapp
 ```

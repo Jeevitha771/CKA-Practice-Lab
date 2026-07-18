@@ -1,0 +1,552 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>CKA Complete Question Guide</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #1f2328;
+    background: #ffffff;
+    padding: 32px 16px 48px;
+  }
+  .container { max-width: 760px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #57606a; font-size: 13px; margin-bottom: 24px; }
+  h2 { font-size: 15px; font-weight: 700; margin: 28px 0 10px; border-bottom: 1px solid #e5e7eb; padding-bottom: 6px; }
+  h3 { font-size: 13px; font-weight: 700; margin: 16px 0 8px; }
+
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .dot-keep   { background: #22c55e; }
+  .dot-skip   { background: #ef4444; }
+  .dot-add    { background: #3b82d4; }
+  .dot-reduce { background: #f59e0b; }
+
+  /* Summary boxes */
+  .summary { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+  .sum-box { flex: 1; min-width: 130px; background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px; text-align: center; }
+  .sum-box .num { font-size: 24px; font-weight: 800; }
+  .sum-box .desc { font-size: 11px; color: #57606a; }
+  .num-keep   { color: #22c55e; }
+  .num-skip   { color: #ef4444; }
+  .num-add    { color: #3b82d4; }
+
+  /* Badge */
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    border-radius: 4px; padding: 2px 7px; white-space: nowrap;
+  }
+  .badge-keep   { background: #dcfce7; color: #166534; }
+  .badge-skip   { background: #fee2e2; color: #991b1b; }
+  .badge-reduce { background: #fef9c3; color: #854d0e; }
+  .badge-add    { background: #dbeafe; color: #1e40af; }
+  .badge-domain { background: #f3e8ff; color: #6b21a8; font-size: 10px; padding: 1px 6px; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 6px; }
+  th { background: #f7f8fa; text-align: left; padding: 8px 10px; font-weight: 600; border-bottom: 2px solid #e5e7eb; font-size: 12px; }
+  td { padding: 7px 10px; border-bottom: 1px solid #e5e7eb; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr.skip-row { opacity: 0.7; }
+  tr.skip-row td:first-child { text-decoration: line-through; color: #57606a; }
+
+  /* Add question cards */
+  .add-card { border: 1px solid #bfdbfe; border-left: 4px solid #3b82d4; border-radius: 6px; padding: 14px 16px; margin-bottom: 12px; background: #f0f7ff; }
+  .add-card .q-num { font-size: 11px; font-weight: 700; color: #3b82d4; text-transform: uppercase; letter-spacing: .04em; }
+  .add-card .q-title { font-size: 14px; font-weight: 700; margin: 4px 0 6px; }
+  .add-card .q-body { font-size: 12.5px; color: #1f2328; margin-bottom: 8px; }
+  .add-card .why { font-size: 11.5px; color: #57606a; border-top: 1px solid #bfdbfe; padding-top: 6px; margin-top: 4px; }
+  .add-card code { background: #dbeafe; color: #1e3a8a; border-radius: 3px; padding: 1px 5px; font-size: 11.5px; }
+
+  /* Section header */
+  .section-header {
+    background: #f7f8fa; border: 1px solid #e5e7eb; border-radius: 6px;
+    padding: 10px 14px; margin: 20px 0 10px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .section-header .sec-title { font-weight: 700; font-size: 13px; }
+  .section-header .sec-weight { font-size: 12px; color: #57606a; }
+
+  .note { background: #fffbeb; border: 1px solid #fde68a; border-radius: 6px; padding: 12px 16px; font-size: 12.5px; margin: 16px 0; }
+  .note strong { color: #92400e; }
+
+  footer { margin-top: 40px; padding-top: 14px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 11px; color: #57606a; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>CKA Complete Question Guide</h1>
+  <p class="subtitle">Exactly which of your Q57–Q190 to keep, which to skip, and 30 new questions to add — mapped to official CKA domains</p>
+
+  
+  <div class="legend">
+    <div class="legend-item"><div class="dot dot-keep"></div> Keep — high exam value</div>
+    <div class="legend-item"><div class="dot dot-skip"></div> Skip — too advanced / beyond CKA scope</div>
+    <div class="legend-item"><div class="dot dot-reduce"></div> Skim — know the concept, don't deep-dive</div>
+    <div class="legend-item"><div class="dot dot-add"></div> Add — missing critical topic</div>
+  </div>
+
+  
+  <div class="summary">
+    <div class="sum-box"><div class="num num-keep">101</div><div class="desc">Questions to KEEP</div></div>
+    <div class="sum-box"><div class="num num-skip">33</div><div class="desc">Questions to SKIP</div></div>
+    <div class="sum-box"><div class="num num-add">30</div><div class="desc">New questions to ADD</div></div>
+    <div class="sum-box"><div class="num" style="color:#7c5cd8">131</div><div class="desc">Total after optimisation</div></div>
+  </div>
+
+  
+  
+  
+  <div class="section-header">
+    <span class="sec-title">Section: Workloads &amp; Scheduling</span>
+    <span class="sec-weight">CKA Weight: 15%  |  Your Qs: Q57–Q79</span>
+  </div>
+
+  <table>
+    <thead><tr><th>Q#</th><th>Topic</th><th>Action</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td>Q57</td><td>HPA not scaling — debug metrics server, resource requests, HPA conditions</td><td><span class="badge badge-keep">KEEP</span></td><td>Core HPA troubleshooting — tested</td></tr>
+      <tr><td>Q58</td><td>VerticalPodAutoscaler — update mode, resource policies</td><td><span class="badge badge-reduce">SKIM</span></td><td>VPA is rarely tested in CKA; know what it is but don't deep-dive</td></tr>
+      <tr><td>Q59</td><td>Deployment with liveness/readiness/startup probes</td><td><span class="badge badge-keep">KEEP</span></td><td>Probes are very commonly tested</td></tr>
+      <tr><td>Q60</td><td>Pod with init container waiting for database:5432</td><td><span class="badge badge-keep">KEEP</span></td><td>Init containers appear frequently</td></tr>
+      <tr><td>Q61</td><td>DaemonSet with host mounts, hostNetwork, hostPID</td><td><span class="badge badge-keep">KEEP</span></td><td>DaemonSet + host access — common scenario</td></tr>
+      <tr><td>Q62</td><td>Job: 10 completions, 3 parallel, backoff, deadline</td><td><span class="badge badge-keep">KEEP</span></td><td>Jobs with parallelism are tested</td></tr>
+      <tr><td>Q63</td><td>CronJob: daily 2AM, backup PVC, concurrency Forbid</td><td><span class="badge badge-keep">KEEP</span></td><td>CronJob is always on the exam</td></tr>
+      <tr><td>Q64</td><td>Adjust liveness probe delays/thresholds for crashing pod</td><td><span class="badge badge-keep">KEEP</span></td><td>Probe tuning = troubleshooting skill</td></tr>
+      <tr><td>Q65</td><td>StatefulSet with headless service, VolumeClaimTemplate, partition</td><td><span class="badge badge-keep">KEEP</span></td><td>StatefulSet is tested — especially partition updates</td></tr>
+      <tr><td>Q66</td><td>Multiple sequential init containers</td><td><span class="badge badge-keep">KEEP</span></td><td>Sequential init containers — good pattern to know</td></tr>
+      <tr><td>Q67</td><td>ResourceQuota in namespace `limited`</td><td><span class="badge badge-keep">KEEP</span></td><td>ResourceQuota is a guaranteed exam topic</td></tr>
+      <tr><td>Q68</td><td>LimitRange in namespace `dev`</td><td><span class="badge badge-keep">KEEP</span></td><td>LimitRange often paired with ResourceQuota</td></tr>
+      <tr><td>Q69</td><td>Pod Pending "Insufficient cpu" — investigate and resolve</td><td><span class="badge badge-keep">KEEP</span></td><td>Classic troubleshooting scenario</td></tr>
+      <tr><td>Q70</td><td>Calculate schedulability: node capacity vs existing pods</td><td><span class="badge badge-reduce">SKIM</span></td><td>Useful concept but manual calculation rarely tested in exam tasks</td></tr>
+      <tr><td>Q71</td><td>PriorityClass + pod using it</td><td><span class="badge badge-keep">KEEP</span></td><td>PriorityClass can appear in scheduling tasks</td></tr>
+      <tr><td>Q72</td><td>Pod affinity: prefer ssd, require same zone, anti-affinity</td><td><span class="badge badge-keep">KEEP</span></td><td>Affinity rules are tested</td></tr>
+      <tr><td>Q73</td><td>Tolerations: NoSchedule taint, not-ready for 300s</td><td><span class="badge badge-keep">KEEP</span></td><td>Tolerations always appear with taints</td></tr>
+      <tr><td>Q74</td><td>Pod with CPU/memory/ephemeral-storage requests+limits</td><td><span class="badge badge-keep">KEEP</span></td><td>Resource spec — core skill</td></tr>
+      <tr><td>Q75</td><td>Convert imperative kubectl run to YAML</td><td><span class="badge badge-keep">KEEP</span></td><td>Speed skill — critical for exam</td></tr>
+      <tr><td>Q76</td><td>Generate YAML for deployment + service + ConfigMap</td><td><span class="badge badge-keep">KEEP</span></td><td>Dry-run YAML generation is an exam technique</td></tr>
+      <tr><td>Q77</td><td>dry-run=client vs dry-run=server</td><td><span class="badge badge-keep">KEEP</span></td><td>Exam may ask you to validate manifests</td></tr>
+      <tr><td>Q78</td><td>kubectl diff before applying</td><td><span class="badge badge-reduce">SKIM</span></td><td>Good practice but rarely a scored task</td></tr>
+      <tr><td>Q79</td><td>Kustomize for dev/staging/prod</td><td><span class="badge badge-skip">SKIP</span></td><td>Kustomize is NOT in the current CKA curriculum — out of scope</td></tr>
+    </tbody>
+  </table>
+
+  
+  
+  
+  <div class="section-header">
+    <span class="sec-title">Section: Services &amp; Networking</span>
+    <span class="sec-weight">CKA Weight: 20%  |  Your Qs: Q80–Q118</span>
+  </div>
+
+  <table>
+    <thead><tr><th>Q#</th><th>Topic</th><th>Action</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td>Q80</td><td>Document cluster network config: CNI, pod/service CIDR, DNS IP</td><td><span class="badge badge-keep">KEEP</span></td><td>Know your cluster layout — foundational</td></tr>
+      <tr><td>Q81</td><td>Debug CNI: check plugin pods, config, test connectivity</td><td><span class="badge badge-keep">KEEP</span></td><td>CNI debugging is tested</td></tr>
+      <tr><td>Q82</td><td>Pod with hostNetwork=true</td><td><span class="badge badge-keep">KEEP</span></td><td>hostNetwork is a real exam scenario</td></tr>
+      <tr><td>Q83</td><td>Verify IP forwarding and bridge netfilter on nodes</td><td><span class="badge badge-keep">KEEP</span></td><td>Node prereqs — often a kubeadm/troubleshooting task</td></tr>
+      <tr><td>Q84</td><td>Pod using specific network interface from multi-homed node</td><td><span class="badge badge-skip">SKIP</span></td><td>Multi-homed NIC config is beyond CKA scope</td></tr>
+      <tr><td>Q85</td><td>Cross-namespace pod communication + DNS names</td><td><span class="badge badge-keep">KEEP</span></td><td>DNS + cross-namespace — commonly tested</td></tr>
+      <tr><td>Q86</td><td>Debug: Pod A can't reach Pod B — NetworkPolicy, DNS, curl</td><td><span class="badge badge-keep">KEEP</span></td><td>Classic network troubleshooting</td></tr>
+      <tr><td>Q87</td><td>DNS resolution: same ns, different ns, FQDN, headless</td><td><span class="badge badge-keep">KEEP</span></td><td>DNS FQDNs are always testable</td></tr>
+      <tr><td>Q88</td><td>Pod can't resolve external DNS — debug and fix</td><td><span class="badge badge-keep">KEEP</span></td><td>CoreDNS upstream config — tested</td></tr>
+      <tr><td>Q89</td><td>Pod-to-pod across nodes — ping and curl</td><td><span class="badge badge-keep">KEEP</span></td><td>Cross-node connectivity check</td></tr>
+      <tr><td>Q90</td><td>ClusterIP service with session affinity</td><td><span class="badge badge-keep">KEEP</span></td><td>Service creation is core</td></tr>
+      <tr><td>Q91</td><td>NodePort service — verify external access</td><td><span class="badge badge-keep">KEEP</span></td><td>NodePort always on exam</td></tr>
+      <tr><td>Q92</td><td>LoadBalancer service — explain vs NodePort</td><td><span class="badge badge-reduce">SKIM</span></td><td>Concept important; cloud LB specifics not tested in bare-metal CKA env</td></tr>
+      <tr><td>Q93</td><td>Headless service for StatefulSet + DNS per pod</td><td><span class="badge badge-keep">KEEP</span></td><td>Headless + StatefulSet DNS — common combo</td></tr>
+      <tr><td>Q94</td><td>Service + Endpoints for external database (no selector)</td><td><span class="badge badge-keep">KEEP</span></td><td>ExternalName / manual Endpoints — tested</td></tr>
+      <tr><td>Q95</td><td>Service not routing — debug selector, endpoints, readiness</td><td><span class="badge badge-keep">KEEP</span></td><td>Core troubleshooting scenario</td></tr>
+      <tr><td>Q96</td><td>Multi-port service</td><td><span class="badge badge-keep">KEEP</span></td><td>Multi-port services appear in real scenarios</td></tr>
+      <tr><td>Q97</td><td>externalTrafficPolicy: Local vs Cluster</td><td><span class="badge badge-reduce">SKIM</span></td><td>Know the difference conceptually — rarely a scored task</td></tr>
+      <tr><td>Q98</td><td>Install Nginx Ingress Controller</td><td><span class="badge badge-keep">KEEP</span></td><td>Ingress controller setup is expected knowledge</td></tr>
+      <tr><td>Q99</td><td>Ingress path-based routing with TLS</td><td><span class="badge badge-keep">KEEP</span></td><td>Path routing + TLS = high-value exam task</td></tr>
+      <tr><td>Q100</td><td>Ingress host-based routing with per-host TLS</td><td><span class="badge badge-keep">KEEP</span></td><td>Host-based routing — always testable</td></tr>
+      <tr><td>Q101</td><td>TLS secret from cert/key files + configure Ingress HTTPS</td><td><span class="badge badge-keep">KEEP</span></td><td>TLS secret creation is a frequent exam task</td></tr>
+      <tr><td>Q102</td><td>Debug Ingress 404 — controller logs, config, backend</td><td><span class="badge badge-keep">KEEP</span></td><td>Ingress troubleshooting — always testable</td></tr>
+      <tr><td>Q103</td><td>Ingress annotations: SSL redirect, timeout, rate limit</td><td><span class="badge badge-reduce">SKIM</span></td><td>Annotation details are controller-specific — know the pattern</td></tr>
+      <tr><td>Q104</td><td>Ingress default backend for 404</td><td><span class="badge badge-reduce">SKIM</span></td><td>Useful but edge-case for CKA</td></tr>
+      <tr><td>Q105</td><td>Ingress URL rewriting and redirects</td><td><span class="badge badge-skip">SKIP</span></td><td>Rewrite rules are controller-specific, beyond CKA scope</td></tr>
+      <tr><td>Q106</td><td>CoreDNS ConfigMap: custom DNS entries, reload</td><td><span class="badge badge-keep">KEEP</span></td><td>CoreDNS customisation is tested</td></tr>
+      <tr><td>Q107</td><td>Debug CoreDNS: pods, logs, nslookup, /etc/resolv.conf</td><td><span class="badge badge-keep">KEEP</span></td><td>DNS troubleshooting is high-value</td></tr>
+      <tr><td>Q108</td><td>CoreDNS forward plugin for example.com → 8.8.8.8</td><td><span class="badge badge-keep">KEEP</span></td><td>Upstream forwarding — tested</td></tr>
+      <tr><td>Q109</td><td>Scale CoreDNS to 3 replicas with anti-affinity</td><td><span class="badge badge-keep">KEEP</span></td><td>CoreDNS HA configuration — real task</td></tr>
+      <tr><td>Q110</td><td>CoreDNS query logging via log plugin</td><td><span class="badge badge-reduce">SKIM</span></td><td>Know it exists; unlikely to be a scored task</td></tr>
+      <tr><td>Q111</td><td>CoreDNS custom upstream DNS for all external queries</td><td><span class="badge badge-reduce">SKIM</span></td><td>Overlaps with Q108; one is enough</td></tr>
+      <tr><td>Q112</td><td>NetworkPolicy: deny-all ingress + allow frontend + allow monitoring</td><td><span class="badge badge-keep">KEEP</span></td><td>NetworkPolicy is always on the exam</td></tr>
+      <tr><td>Q113</td><td>NetworkPolicy: allow same-ns egress + kube-dns + deny rest</td><td><span class="badge badge-keep">KEEP</span></td><td>Egress policies are tested</td></tr>
+      <tr><td>Q114</td><td>Three-tier NetworkPolicy: frontend→backend→database</td><td><span class="badge badge-keep">KEEP</span></td><td>Multi-tier policies — exam favourite</td></tr>
+      <tr><td>Q115</td><td>NetworkPolicy: allow from 10.0.0.0/8, deny 10.0.5.0/24</td><td><span class="badge badge-keep">KEEP</span></td><td>IP block policies are tested</td></tr>
+      <tr><td>Q116</td><td>Debug NetworkPolicy blocking traffic</td><td><span class="badge badge-keep">KEEP</span></td><td>Troubleshooting policies = core skill</td></tr>
+      <tr><td>Q117</td><td>Default deny-all then specific allow policies</td><td><span class="badge badge-keep">KEEP</span></td><td>This is the standard security pattern</td></tr>
+      <tr><td>Q118</td><td>NetworkPolicy egress to specific external IPs/ports</td><td><span class="badge badge-keep">KEEP</span></td><td>Egress to external — appears in exams</td></tr>
+    </tbody>
+  </table>
+
+  
+  
+  
+  <div class="section-header">
+    <span class="sec-title">Section: Storage</span>
+    <span class="sec-weight">CKA Weight: 10%  |  Your Qs: Q119–Q137</span>
+  </div>
+
+  <table>
+    <thead><tr><th>Q#</th><th>Topic</th><th>Action</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td>Q119</td><td>Create PV: 5Gi, RWO, hostPath, Retain</td><td><span class="badge badge-keep">KEEP</span></td><td>PV creation is core exam task</td></tr>
+      <tr><td>Q120</td><td>StorageClass: aws-ebs, gp3, WaitForFirstConsumer</td><td><span class="badge badge-keep">KEEP</span></td><td>StorageClass — always tested</td></tr>
+      <tr><td>Q121</td><td>List PVs by status (Available/Bound/Released/Failed)</td><td><span class="badge badge-keep">KEEP</span></td><td>PV lifecycle knowledge is tested</td></tr>
+      <tr><td>Q122</td><td>Reclaim Released PV and make available</td><td><span class="badge badge-keep">KEEP</span></td><td>PV reclaim — classic scenario</td></tr>
+      <tr><td>Q123</td><td>PV with RWX + Recycle policy, explain access modes</td><td><span class="badge badge-keep">KEEP</span></td><td>Access modes are exam theory + task</td></tr>
+      <tr><td>Q124</td><td>PV with block volume mode + pod usage</td><td><span class="badge badge-skip">SKIP</span></td><td>Block volume mode is advanced — rarely tested in CKA</td></tr>
+      <tr><td>Q125</td><td>Change PV reclaim policy Delete→Retain</td><td><span class="badge badge-keep">KEEP</span></td><td>Patch PV policy — common scenario</td></tr>
+      <tr><td>Q126</td><td>PVC: 2Gi, RWO, fast-storage, selector label</td><td><span class="badge badge-keep">KEEP</span></td><td>PVC creation — always on exam</td></tr>
+      <tr><td>Q127</td><td>Pod using PVC — write, delete, recreate, verify data</td><td><span class="badge badge-keep">KEEP</span></td><td>Persistence verification — tested</td></tr>
+      <tr><td>Q128</td><td>PVC stuck Pending — debug PV/SC/access mode</td><td><span class="badge badge-keep">KEEP</span></td><td>PVC troubleshooting is tested</td></tr>
+      <tr><td>Q129</td><td>Expand PVC from 5Gi to 10Gi</td><td><span class="badge badge-keep">KEEP</span></td><td>Volume expansion is a real exam task</td></tr>
+      <tr><td>Q130</td><td>PVC bound to specific PV by name</td><td><span class="badge badge-reduce">SKIM</span></td><td>Useful concept; rarely a standalone exam task</td></tr>
+      <tr><td>Q131</td><td>StatefulSet with VolumeClaimTemplate, own PVC per pod</td><td><span class="badge badge-keep">KEEP</span></td><td>StatefulSet + storage — frequently tested</td></tr>
+      <tr><td>Q132</td><td>Deployment: ConfigMap + Secret + PVC + EmptyDir volumes</td><td><span class="badge badge-keep">KEEP</span></td><td>Multi-volume pod is a common task</td></tr>
+      <tr><td>Q133</td><td>Init container preparing data in shared volume</td><td><span class="badge badge-keep">KEEP</span></td><td>Shared volume pattern — appears in exams</td></tr>
+      <tr><td>Q134</td><td>Job backing up PVC data to external location</td><td><span class="badge badge-reduce">SKIM</span></td><td>Concept useful; implementation detail varies too much</td></tr>
+      <tr><td>Q135</td><td>hostPath volume for logging + security implications</td><td><span class="badge badge-keep">KEEP</span></td><td>hostPath is commonly tested</td></tr>
+      <tr><td>Q136</td><td>Projected volume: ConfigMap + Secret + downwardAPI</td><td><span class="badge badge-reduce">SKIM</span></td><td>Advanced volume type — edge case for CKA</td></tr>
+      <tr><td>Q137</td><td>StatefulSet volumeClaimTemplates — verify unique PVC per pod</td><td><span class="badge badge-keep">KEEP</span></td><td>Overlaps with Q131 — same concept, verify understanding</td></tr>
+    </tbody>
+  </table>
+
+  
+  
+  
+  <div class="section-header">
+    <span class="sec-title">Section: Troubleshooting</span>
+    <span class="sec-weight">CKA Weight: 30%  |  Your Qs: Q138–Q190</span>
+  </div>
+
+  <table>
+    <thead><tr><th>Q#</th><th>Topic</th><th>Action</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td>Q138</td><td>Node NotReady — kubelet logs, runtime, resources</td><td><span class="badge badge-keep">KEEP</span></td><td>Node troubleshooting = 30% domain, always tested</td></tr>
+      <tr><td>Q139</td><td>Logs: pod, previous crash, by label, kubelet</td><td><span class="badge badge-keep">KEEP</span></td><td>Logging is core skill</td></tr>
+      <tr><td>Q140</td><td>Logs from multiple containers simultaneously</td><td><span class="badge badge-keep">KEEP</span></td><td>Multi-container log access</td></tr>
+      <tr><td>Q141</td><td>CrashLoopBackOff — logs, describe, events</td><td><span class="badge badge-keep">KEEP</span></td><td>CrashLoop is THE most common exam scenario</td></tr>
+      <tr><td>Q142</td><td>Kubelet not starting — systemd logs, config, certs</td><td><span class="badge badge-keep">KEEP</span></td><td>Kubelet repair is always on the exam</td></tr>
+      <tr><td>Q143</td><td>kubectl top: nodes, pods, namespace, containers</td><td><span class="badge badge-keep">KEEP</span></td><td>Resource monitoring — tested</td></tr>
+      <tr><td>Q144</td><td>Identify top CPU/memory pods + optimise</td><td><span class="badge badge-reduce">SKIM</span></td><td>Identification is useful; optimisation recommendations are vague for exam</td></tr>
+      <tr><td>Q145</td><td>Configure metrics collection — verify kubectl top works</td><td><span class="badge badge-keep">KEEP</span></td><td>Metrics-server setup is tested</td></tr>
+      <tr><td>Q146</td><td>OOMKilled pod — analyse and adjust limits</td><td><span class="badge badge-keep">KEEP</span></td><td>OOMKill troubleshooting — classic</td></tr>
+      <tr><td>Q147</td><td>Deploy metrics-server and verify all nodes</td><td><span class="badge badge-keep">KEEP</span></td><td>Metrics-server is infrastructure for HPA/top</td></tr>
+      <tr><td>Q148</td><td>Stream logs + filter for ERROR</td><td><span class="badge badge-keep">KEEP</span></td><td>Log filtering — real exam task</td></tr>
+      <tr><td>Q149</td><td>Logs from sidecar in multi-container pod</td><td><span class="badge badge-keep">KEEP</span></td><td>-c flag usage — tested</td></tr>
+      <tr><td>Q150</td><td>Pod writing logs to stdout AND file on PVC</td><td><span class="badge badge-reduce">SKIM</span></td><td>Useful pattern, rarely a scored CKA task</td></tr>
+      <tr><td>Q151</td><td>Pod logs not appearing — debug container, log driver, disk</td><td><span class="badge badge-keep">KEEP</span></td><td>Log troubleshooting scenario</td></tr>
+      <tr><td>Q152</td><td>App not responding — systematic debug: pod/logs/probes/network</td><td><span class="badge badge-keep">KEEP</span></td><td>Systematic debugging is the exam's highest-value skill</td></tr>
+      <tr><td>Q153</td><td>Deployment rollout stuck — identify and fix</td><td><span class="badge badge-keep">KEEP</span></td><td>Rollout issues are common exam tasks</td></tr>
+      <tr><td>Q154</td><td>Pods running but 503 — debug service/endpoints/ingress</td><td><span class="badge badge-keep">KEEP</span></td><td>Service connectivity debugging — tested</td></tr>
+      <tr><td>Q155</td><td>App works locally but fails in k8s — env vars, volumes, policies</td><td><span class="badge badge-keep">KEEP</span></td><td>Config debugging scenario</td></tr>
+      <tr><td>Q156</td><td>Pod stuck Pending — scheduling: resources/selectors/taints/affinity</td><td><span class="badge badge-keep">KEEP</span></td><td>Pending pod = most common exam task type</td></tr>
+      <tr><td>Q157</td><td>Can't connect to database — DNS, NetworkPolicy, pod, secrets</td><td><span class="badge badge-keep">KEEP</span></td><td>End-to-end connectivity debug — always tested</td></tr>
+      <tr><td>Q158</td><td>Intermittent failures — debug root cause</td><td><span class="badge badge-reduce">SKIM</span></td><td>Too vague for exam prep; real scenarios covered by Q152/Q157</td></tr>
+      <tr><td>Q159</td><td>API server not responding — pod/process, logs, etcd, certs</td><td><span class="badge badge-keep">KEEP</span></td><td>Control plane troubleshooting — tested</td></tr>
+      <tr><td>Q160</td><td>Scheduler not scheduling pods — logs, API connectivity</td><td><span class="badge badge-keep">KEEP</span></td><td>Scheduler debugging — core component</td></tr>
+      <tr><td>Q161</td><td>Controller manager not creating replicas</td><td><span class="badge badge-keep">KEEP</span></td><td>Control plane component debug — tested</td></tr>
+      <tr><td>Q162</td><td>Kubelet not registering — service, config, certs, API</td><td><span class="badge badge-keep">KEEP</span></td><td>Worker node join issues — tested</td></tr>
+      <tr><td>Q163</td><td>CoreDNS pods not running — restore DNS</td><td><span class="badge badge-keep">KEEP</span></td><td>DNS restoration is a real exam task</td></tr>
+      <tr><td>Q164</td><td>kube-proxy not updating iptables</td><td><span class="badge badge-keep">KEEP</span></td><td>kube-proxy debug — tested</td></tr>
+      <tr><td>Q165</td><td>etcd cluster unhealthy — member status, restore backup</td><td><span class="badge badge-keep">KEEP</span></td><td>etcd restore is THE highest-value task on the exam</td></tr>
+      <tr><td>Q166</td><td>Control plane failing after cert expiration — renew + restart</td><td><span class="badge badge-keep">KEEP</span></td><td>Cert renewal is tested</td></tr>
+      <tr><td>Q167</td><td>Cross-node pod communication — CNI, routes, firewall</td><td><span class="badge badge-keep">KEEP</span></td><td>Node-level networking debug</td></tr>
+      <tr><td>Q168</td><td>Service not load balancing — endpoints, labels, kube-proxy</td><td><span class="badge badge-keep">KEEP</span></td><td>Service LB debug — tested</td></tr>
+      <tr><td>Q169</td><td>Ingress 404 — controller logs, ingress config, backend</td><td><span class="badge badge-keep">KEEP</span></td><td>Ingress troubleshooting — always appears</td></tr>
+      <tr><td>Q170</td><td>DNS failing for services — CoreDNS, resolv.conf, NetworkPolicy</td><td><span class="badge badge-keep">KEEP</span></td><td>DNS troubleshooting — high value</td></tr>
+      <tr><td>Q171</td><td>External traffic can't reach NodePort — firewall, kube-proxy</td><td><span class="badge badge-keep">KEEP</span></td><td>NodePort external access — common scenario</td></tr>
+      <tr><td>Q172</td><td>NetworkPolicy blocking traffic — identify and create exception</td><td><span class="badge badge-keep">KEEP</span></td><td>Policy debugging — always tested</td></tr>
+      <tr><td>Q173</td><td>Pods reach services by IP but not DNS name</td><td><span class="badge badge-keep">KEEP</span></td><td>DNS-specific failure scenario</td></tr>
+      <tr><td>Q174</td><td>Intermittent network connectivity between pods</td><td><span class="badge badge-reduce">SKIM</span></td><td>Too vague; specific scenarios in Q167/Q168 are better</td></tr>
+      <tr><td>Q175</td><td>Full stack debug: frontend/backend/database</td><td><span class="badge badge-keep">KEEP</span></td><td>End-to-end scenario — perfect for exam simulation</td></tr>
+      <tr><td>Q176</td><td>After cluster upgrade: API deprecations, RBAC, CNI</td><td><span class="badge badge-keep">KEEP</span></td><td>Post-upgrade issues are tested</td></tr>
+      <tr><td>Q177</td><td>High node load — limits, priority classes, affinity, eviction</td><td><span class="badge badge-keep">KEEP</span></td><td>Resource pressure scenario</td></tr>
+      <tr><td>Q178</td><td>Complete monitoring: metrics-server + quotas + HPA + alerts</td><td><span class="badge badge-keep">KEEP</span></td><td>Combined scenario — good exam simulation</td></tr>
+      <tr><td>Q179</td><td>Secure namespace: NetworkPolicy + pod security + RBAC + quotas</td><td><span class="badge badge-keep">KEEP</span></td><td>Security hardening — high-value combined task</td></tr>
+      <tr><td>Q180</td><td>Migrate stateful app: cordon/drain/PV attachment</td><td><span class="badge badge-keep">KEEP</span></td><td>Node drain + stateful migration — real scenario</td></tr>
+      <tr><td>Q181</td><td>Debug cert expiration: API server, kubelet, SA, webhooks</td><td><span class="badge badge-keep">KEEP</span></td><td>Cert debug across components</td></tr>
+      <tr><td>Q182</td><td>Istio service mesh: install, sidecar injection, mTLS</td><td><span class="badge badge-skip">SKIP</span></td><td>Istio is completely out of CKA scope</td></tr>
+      <tr><td>Q183</td><td>Disaster recovery drill: simulate failure, restore etcd, validate</td><td><span class="badge badge-keep">KEEP</span></td><td>etcd restore scenario — exam staple</td></tr>
+      <tr><td>Q184</td><td>Optimise cluster: kubelet tuning, etcd optimisation</td><td><span class="badge badge-skip">SKIP</span></td><td>Performance tuning is CKS/advanced — beyond CKA</td></tr>
+      <tr><td>Q185</td><td>Debug PV provisioning in cloud: StorageClass, IAM, credentials</td><td><span class="badge badge-reduce">SKIM</span></td><td>Cloud IAM is cloud-specific; exam is provisioner-agnostic</td></tr>
+      <tr><td>Q186</td><td>Complex networking: multi NetworkPolicy + ingress + service mesh</td><td><span class="badge badge-skip">SKIP</span></td><td>Service mesh is out of scope; too complex for exam format</td></tr>
+      <tr><td>Q187</td><td>Custom scheduler: deploy, configure pod, verify decisions</td><td><span class="badge badge-skip">SKIP</span></td><td>Custom scheduler is beyond CKA scope</td></tr>
+      <tr><td>Q188</td><td>Complete cluster health check: all components, security, perf</td><td><span class="badge badge-reduce">SKIM</span></td><td>Great for holistic review; too broad for a single exam task</td></tr>
+      <tr><td>Q189</td><td>Pods evicted due to node pressure — investigate + prevent</td><td><span class="badge badge-keep">KEEP</span></td><td>Eviction and node pressure — tested</td></tr>
+      <tr><td>Q190</td><td>Pod Security Standards blocking pod creation</td><td><span class="badge badge-keep">KEEP</span></td><td>PSS replaced PSP — current exam topic</td></tr>
+    </tbody>
+  </table>
+
+  
+  
+  
+  <h2>30 New Questions to ADD — Covering Missing 25% Domain</h2>
+
+  <div class="note">
+    <strong>⚠️ This entire domain is absent from your Q57–Q190 set.</strong> "Cluster Architecture, Installation &amp; Configuration" is worth 25% of the exam. 
+    The questions below fill that gap completely. Practice ALL of them — they are high-certainty exam tasks.
+  </div>
+
+  <h3>A. etcd Backup &amp; Restore (near-certain exam task)</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q1 — Critical</div>
+    <div class="q-title">Backup etcd to a snapshot file</div>
+    <div class="q-body">Take a snapshot of the etcd cluster running on the control plane. Save it to <code>/opt/backup/etcd-snapshot.db</code>. The etcd server uses TLS — cert, key, and CA files are at <code>/etc/kubernetes/pki/etcd/</code>.</div>
+    <div class="why">⭐ Near-certain exam task. Must know: <code>ETCDCTL_API=3 etcdctl snapshot save</code> with <code>--endpoints --cacert --cert --key</code> flags.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q2 — Critical</div>
+    <div class="q-title">Restore etcd from a snapshot</div>
+    <div class="q-body">Restore etcd from snapshot at <code>/opt/backup/etcd-snapshot.db</code> to a new data directory <code>/var/lib/etcd-restore</code>. Update the etcd static pod manifest to use the new data directory and verify the cluster recovers.</div>
+    <div class="why">⭐ Exam always pairs backup with restore. Must also know: how to update <code>/etc/kubernetes/manifests/etcd.yaml</code> <code>--data-dir</code> and <code>hostPath</code> volume.</div>
+  </div>
+
+  <h3>B. RBAC (Role-Based Access Control)</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q3 — Critical</div>
+    <div class="q-title">Create Role and RoleBinding for a user</div>
+    <div class="q-body">Create a Role <code>pod-reader</code> in namespace <code>dev</code> that allows <code>get</code>, <code>list</code>, <code>watch</code> on pods. Create a RoleBinding binding user <code>jane</code> to this role. Verify with <code>kubectl auth can-i</code>.</div>
+    <div class="why">⭐ RBAC is 25% domain — always on exam. Must know both Role and RoleBinding YAML and the <code>auth can-i --as</code> verification.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q4 — Critical</div>
+    <div class="q-title">Create ClusterRole and ClusterRoleBinding</div>
+    <div class="q-body">Create a ClusterRole <code>node-reader</code> that allows <code>get</code>, <code>list</code>, <code>watch</code> on nodes. Bind it to ServiceAccount <code>monitoring-sa</code> in namespace <code>monitoring</code> using a ClusterRoleBinding.</div>
+    <div class="why">⭐ Cluster-wide RBAC with ServiceAccount — common exam pattern. Know the difference: ClusterRoleBinding vs RoleBinding with ClusterRole.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q5 — Critical</div>
+    <div class="q-title">Create a ServiceAccount and use it in a pod</div>
+    <div class="q-body">Create ServiceAccount <code>api-sa</code> in namespace <code>production</code>. Create a pod that uses this ServiceAccount. Verify the token is mounted. Also create a pod with <code>automountServiceAccountToken: false</code>.</div>
+    <div class="why">ServiceAccount usage in pods is frequently tested. Disabling automount is a security hardening task.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q6 — Important</div>
+    <div class="q-title">Investigate and fix broken RBAC permissions</div>
+    <div class="q-body">A pod running as ServiceAccount <code>app-sa</code> is getting "forbidden" errors trying to list ConfigMaps. Find the missing permission, create the appropriate Role and RoleBinding to fix it. Verify the pod can now access ConfigMaps.</div>
+    <div class="why">RBAC troubleshooting is a common exam task — read errors, fix permissions, verify.</div>
+  </div>
+
+  <h3>C. kubeadm — Cluster Setup &amp; Upgrade</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q7 — Critical</div>
+    <div class="q-title">Bootstrap a cluster with kubeadm</div>
+    <div class="q-body">Initialise a Kubernetes cluster using <code>kubeadm init</code> with pod network CIDR <code>10.244.0.0/16</code>. Set up the kubeconfig. Install a CNI plugin (Flannel or Calico). Verify control plane pods are running.</div>
+    <div class="why">⭐ kubeadm init is the entry point for the cluster architecture domain. Must know: <code>--pod-network-cidr</code>, copying kubeconfig, applying CNI manifest.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q8 — Critical</div>
+    <div class="q-title">Join a worker node to the cluster</div>
+    <div class="q-body">On a new worker node, join it to an existing cluster using a <code>kubeadm join</code> token. If the token has expired, generate a new one on the control plane. Verify the node appears and becomes Ready.</div>
+    <div class="why">⭐ Worker node join is tested. Know: <code>kubeadm token create --print-join-command</code> and how to generate a discovery token hash.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q9 — Critical</div>
+    <div class="q-title">Upgrade cluster from v1.29 to v1.30 using kubeadm</div>
+    <div class="q-body">Upgrade the control plane: update apt repo, install <code>kubeadm v1.30</code>, run <code>kubeadm upgrade apply v1.30.x</code>, drain the control plane node, upgrade <code>kubelet</code> and <code>kubectl</code>, uncordon. Then upgrade a worker node: cordon, drain, upgrade kubelet, uncordon.</div>
+    <div class="why">⭐ Cluster upgrade is a near-certain exam task. Know the exact sequence: kubeadm → drain → kubelet → uncordon.</div>
+  </div>
+
+  <h3>D. Kubeconfig &amp; Contexts</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q10 — Critical</div>
+    <div class="q-title">Manage kubeconfig: add cluster, user, context</div>
+    <div class="q-body">Add a new cluster <code>cluster-prod</code> (API server <code>https://192.168.1.10:6443</code>, CA cert <code>/opt/ca.crt</code>) to kubeconfig. Add user <code>admin-prod</code> with client cert and key. Create context <code>prod-context</code>. Switch to it and verify with <code>kubectl get nodes</code>.</div>
+    <div class="why">⭐ Every exam task begins with switching context/namespace. Must be fluent with <code>kubectl config set-cluster/set-credentials/set-context/use-context</code>.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q11 — Important</div>
+    <div class="q-title">Merge two kubeconfig files and switch contexts</div>
+    <div class="q-body">You have two kubeconfig files at <code>~/.kube/config</code> and <code>/opt/cluster2.yaml</code>. Merge them using <code>KUBECONFIG</code> env variable. List all contexts, switch to the second cluster's context, and verify access.</div>
+    <div class="why">Multi-cluster kubeconfig management is expected exam knowledge — <code>KUBECONFIG=file1:file2 kubectl config view --flatten</code>.</div>
+  </div>
+
+  <h3>E. Node Maintenance</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q12 — Critical</div>
+    <div class="q-title">Safely drain a node for maintenance</div>
+    <div class="q-body">Node <code>worker-1</code> needs kernel maintenance. Cordon it so no new pods are scheduled. Drain it safely (handle DaemonSets and pods with local storage). Perform "maintenance" (echo done). Uncordon the node and verify pods reschedule.</div>
+    <div class="why">⭐ Cordon/drain/uncordon is a guaranteed exam task. Know the flags: <code>--ignore-daemonsets --delete-emptydir-data --force</code>.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q13 — Important</div>
+    <div class="q-title">Taint a node and verify scheduling behaviour</div>
+    <div class="q-body">Add taint <code>env=production:NoSchedule</code> to node <code>worker-2</code>. Verify that a new pod without tolerations is not scheduled there. Create a pod with the correct toleration and verify it schedules on <code>worker-2</code>. Then remove the taint.</div>
+    <div class="why">Applying and removing taints on nodes — your existing questions only cover tolerations, not tainting nodes.</div>
+  </div>
+
+  <h3>F. Certificates</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q14 — Important</div>
+    <div class="q-title">Check and renew cluster certificates</div>
+    <div class="q-body">Check the expiry of all kubeadm-managed certificates using <code>kubeadm certs check-expiration</code>. Renew all certificates with <code>kubeadm certs renew all</code>. Restart the control plane static pods and verify the API server is accessible.</div>
+    <div class="why">Certificate renewal is tested — especially in troubleshooting scenarios where the API is unreachable due to expired certs.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q15 — Important</div>
+    <div class="q-title">Create a CertificateSigningRequest for a new user</div>
+    <div class="q-body">Generate a private key and CSR for user <code>john</code>. Create a Kubernetes CertificateSigningRequest object, approve it, and extract the signed certificate. Configure a kubeconfig entry for <code>john</code> using the signed cert.</div>
+    <div class="why">CSR workflow (key → CSR → CertificateSigningRequest → approve → cert) is an exam task in the RBAC/auth domain.</div>
+  </div>
+
+  <h3>G. kubectl Output &amp; JSONPath</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q16 — Critical</div>
+    <div class="q-title">Use JSONPath to extract specific fields</div>
+    <div class="q-body">Using a single <code>kubectl</code> command: (a) get the IP of all nodes, (b) list all pod names and their node assignments, (c) get the image used by all containers in all pods in namespace <code>default</code>. Use <code>-o jsonpath</code>.</div>
+    <div class="why">⭐ JSONPath output is tested in almost every CKA exam. Know: <code>'{range .items[*]}{.metadata.name}{"\t"}{.status.podIP}{"\n"}{end}'</code> pattern.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q17 — Important</div>
+    <div class="q-title">Sort and filter kubectl output</div>
+    <div class="q-body">List all pods across all namespaces sorted by creation time. List all PVs sorted by capacity. Find all pods that are NOT in Running state. Output results to files using <code>--sort-by</code> and <code>-o custom-columns</code>.</div>
+    <div class="why">Sorting and filtering output is a common exam requirement — often paired with "save the output to file /opt/answer.txt".</div>
+  </div>
+
+  <h3>H. Static Pods</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q18 — Important</div>
+    <div class="q-title">Create a static pod on a specific node</div>
+    <div class="q-body">Create a static pod named <code>static-web</code> running <code>nginx:1.21</code> on node <code>worker-1</code>. SSH to the node, place the pod manifest in <code>/etc/kubernetes/manifests/</code>. Verify the pod appears in <code>kubectl get pods</code>. Then delete it by removing the manifest file.</div>
+    <div class="why">Static pods are a cluster architecture concept — tested in setup and troubleshooting scenarios.</div>
+  </div>
+
+  <h3>I. Pod Security Standards</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q19 — Important</div>
+    <div class="q-title">Apply Pod Security Standards to a namespace</div>
+    <div class="q-body">Label namespace <code>secure-ns</code> to enforce the <code>baseline</code> pod security standard and warn on <code>restricted</code>. Try to create a privileged pod — verify it is rejected. Create a non-privileged pod — verify it is allowed.</div>
+    <div class="why">PSS replaced PodSecurityPolicy (PSP) in Kubernetes 1.25+. Current exam uses PSS. Know the three levels: privileged, baseline, restricted.</div>
+  </div>
+
+  <h3>J. Imperative Commands Mastery (Exam Speed)</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q20 — Critical</div>
+    <div class="q-title">Create resources imperatively and save as YAML</div>
+    <div class="q-body">Using only imperative commands (no writing YAML by hand), create: (a) a deployment <code>myapp</code> with image <code>nginx</code> and 3 replicas, (b) expose it as a ClusterIP service on port 80, (c) create a ConfigMap from literal values, (d) create a Secret with username/password. Save each as YAML with <code>--dry-run=client -o yaml</code>.</div>
+    <div class="why">⭐ Speed is critical in a 2-hour exam. Being able to generate YAML imperatively is 10x faster than writing it from scratch.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q21 — Critical</div>
+    <div class="q-title">Rollout management: update, rollback, history</div>
+    <div class="q-body">Update deployment <code>webapp</code> image to <code>nginx:1.22</code> with a change-cause annotation. Check rollout status. Simulate a bad update (<code>nginx:broken</code>) and watch it fail. Roll back to the previous version. View rollout history and roll back to a specific revision.</div>
+    <div class="why">⭐ Rollout and rollback tasks appear on every CKA exam — <code>kubectl rollout status/history/undo --to-revision</code>.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q22 — Important</div>
+    <div class="q-title">Scale deployments and configure HPA imperatively</div>
+    <div class="q-body">Scale deployment <code>api-server</code> to 5 replicas imperatively. Create an HPA for it: min 2, max 10, CPU target 70%. Verify HPA is created. Use <code>kubectl autoscale</code> command (not YAML).</div>
+    <div class="why">Imperative scaling and autoscaling — know <code>kubectl scale</code> and <code>kubectl autoscale</code>.</div>
+  </div>
+
+  <h3>K. ConfigMaps &amp; Secrets (if not covered in earlier questions)</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q23 — Important</div>
+    <div class="q-title">ConfigMap and Secret usage patterns</div>
+    <div class="q-body">Create a ConfigMap from a file, from literals, and from a directory. Create a Secret (generic, TLS, docker-registry). Use them in a pod as: (a) environment variables, (b) volume mounts. Verify the values are accessible inside the container.</div>
+    <div class="why">ConfigMap/Secret mounting is in every exam — both env var and volume patterns must be fluent.</div>
+  </div>
+
+  <h3>L. Additional Troubleshooting (Cluster Architecture)</h3>
+
+  <div class="add-card">
+    <div class="q-num">New Q24 — Critical</div>
+    <div class="q-title">Fix a broken control plane component (static pod)</div>
+    <div class="q-body">The kube-scheduler is not running. Investigate: check <code>/etc/kubernetes/manifests/kube-scheduler.yaml</code> for misconfigurations (wrong flag, bad image, incorrect volume path). Fix the manifest and verify the scheduler restarts and pods begin scheduling.</div>
+    <div class="why">⭐ Breaking and fixing static pod manifests for control plane components is a very common exam task. The exam deliberately introduces errors in manifest files.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q25 — Critical</div>
+    <div class="q-title">Fix a broken kubelet configuration on a worker node</div>
+    <div class="q-body">Worker node <code>worker-1</code> is NotReady. SSH to the node. The kubelet service has a wrong <code>--config</code> path or a typo in <code>/var/lib/kubelet/config.yaml</code>. Fix the configuration, restart kubelet with <code>systemctl restart kubelet</code>, verify the node becomes Ready.</div>
+    <div class="why">⭐ Broken kubelet is the #1 most common troubleshooting task on the CKA exam. Practise this until it's muscle memory.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q26 — Important</div>
+    <div class="q-title">Identify and fix a pod with wrong node selector / node name</div>
+    <div class="q-body">A pod is stuck Pending because it has <code>nodeName: worker-99</code> (doesn't exist) or a <code>nodeSelector</code> label that no node has. Identify the issue, fix the pod spec, and verify it schedules correctly.</div>
+    <div class="why">Wrong nodeName/nodeSelector is a deliberate exam trap — the fix requires editing the pod or deleting/recreating it.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q27 — Important</div>
+    <div class="q-title">Use crictl to debug containers when kubectl is unavailable</div>
+    <div class="q-body">On a node where kubectl is not available (or API server is down), use <code>crictl ps</code> to list containers, <code>crictl logs &lt;id&gt;</code> to get container logs, <code>crictl inspect &lt;id&gt;</code> to inspect container details. Identify a misconfigured container.</div>
+    <div class="why">When the API server is down (as in etcd-restore scenarios), crictl is the only tool available. Know: <code>crictl ps -a</code>, <code>crictl logs</code>, <code>crictl rmi</code>.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q28 — Important</div>
+    <div class="q-title">Investigate events and resource status across the cluster</div>
+    <div class="q-body">Use <code>kubectl get events --sort-by=.lastTimestamp -A</code> to find recent cluster events. Identify pods with Warning events. Use <code>kubectl describe node</code> to read node conditions and allocated resources. Save events to a file.</div>
+    <div class="why">Events are the first place to look when something is wrong — exam tasks often require reading events to identify the root cause.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q29 — Good to Know</div>
+    <div class="q-title">Network troubleshooting with a debug pod</div>
+    <div class="q-body">Deploy a debug pod (<code>nicolaka/netshoot</code> or <code>busybox</code>) in a namespace. Use it to: run <code>nslookup</code> for service DNS, <code>curl</code> a service endpoint, <code>ping</code> another pod IP, check <code>/etc/resolv.conf</code>. Use <code>kubectl exec</code> and <code>kubectl run --rm -it</code> patterns.</div>
+    <div class="why">In-cluster debugging with a temporary pod is an essential exam technique — many network tasks require running commands from inside a pod.</div>
+  </div>
+
+  <div class="add-card">
+    <div class="q-num">New Q30 — Good to Know</div>
+    <div class="q-title">Verify cluster component health comprehensively</div>
+    <div class="q-body">Systematically check: <code>kubectl get componentstatuses</code>, all pods in <code>kube-system</code>, node conditions, API server health endpoint <code>/healthz</code>, etcd member list, kubelet service status on each node. Document any anomalies.</div>
+    <div class="why">Cluster health check is both an exam task type and a real-world skill. Know all the check commands so you can quickly triage any scenario.</div>
+  </div>
+
+  
+  <h2>Your Optimised Study Plan</h2>
+  <table>
+    <thead><tr><th>Phase</th><th>What to Do</th><th>Time</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Phase 1</strong></td><td>Practice all <span class="badge badge-keep">KEEP</span> questions hands-on (not just reading) — build muscle memory</td><td>2 weeks</td></tr>
+      <tr><td><strong>Phase 2</strong></td><td>Add and practice <span class="badge badge-add">New Q1–Q30</span> — fills the 25% missing domain</td><td>1.5 weeks</td></tr>
+      <tr><td><strong>Phase 3</strong></td><td>Do both killer.sh mock exams — target 75%+ score before booking</td><td>3–4 days</td></tr>
+      <tr><td><strong>Phase 4</strong></td><td>Speed drills: practice etcd backup/restore and kubelet fix in under 5 minutes each</td><td>3 days</td></tr>
+    </tbody>
+  </table>
+
+  <footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>

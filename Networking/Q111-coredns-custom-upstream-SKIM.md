@@ -1,6 +1,6 @@
-# Q111. Configure CoreDNS Custom Upstream DNS for All External Queries (SKIM)
+﻿# Q111. Configure CoreDNS Custom Upstream DNS for All External Queries (SKIM)
 
-> **SKIM — Overlaps with Q108. Low additional exam value.**
+> **SKIM ΓÇö Overlaps with Q108. Low additional exam value.**
 > Know the single-line change needed. Do not deep-dive.
 
 ## What to Know
@@ -18,12 +18,12 @@ forward . /etc/resolv.conf
 ```
 To:
 ```
-forward . 10.0.0.53
+forward . 8.8.8.8
 ```
 
 Or for multiple upstreams with failover:
 ```
-forward . 10.0.0.53 10.0.0.54
+forward . 8.8.8.8 10.0.0.54
 ```
 
 Reload:
