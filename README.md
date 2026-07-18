@@ -13,7 +13,8 @@ A structured collection of CKA (Certified Kubernetes Administrator) practice que
 
 ```
 CKA-Practice-Lab/
-├── Deployments/           # Q1–Q3, Q41–Q45
+├── Cluster-Architecture/  # Q1–Q37   ← NEW
+├── Deployments/           # Q38–Q45
 ├── ConfigMaps-Secrets/    # Q46–Q52
 ├── Scaling/               # Q53–Q58
 ├── Probes-DaemonSets/     # Q59–Q66
@@ -21,8 +22,9 @@ CKA-Practice-Lab/
 ├── Resource-Management/   # Q67–Q70, Q74
 ├── Scheduling/            # Q71–Q73
 ├── Manifest-Management/   # Q75–Q79
-├── Networking/            # Q80–Q84
-└── Storage/               # Q119–Q136
+├── Networking/            # Q80–Q118
+├── Storage/               # Q119–Q137
+└── Troubleshooting/       # Q138–Q190 ← NEW
 ```
 
 ---
@@ -135,3 +137,52 @@ CKA-Practice-Lab/
 | Q134 | Backup Job copying data from source PVC to backup PVC |
 | Q135 | hostPath volume for logging — security implications |
 | Q136 | Projected volume combining ConfigMap, Secret, DownwardAPI |
+| Q137 | StatefulSet with volumeClaimTemplates — unique PVC per pod verified |
+
+### Cluster Architecture, Installation & Configuration *(NEW)*
+| File | Topic |
+|---|---|
+| Q1 | Create ServiceAccount, Role `pod-reader`, RoleBinding in `production` |
+| Q2 | Role with `pods/log` and `pods/exec` subresources — `dev-user` |
+| Q3 | ClusterRole `node-reader` + ClusterRoleBinding for user |
+| Q4 | ServiceAccount cluster-wide pod read access across all namespaces |
+| Q5 | Role `secret-manager` bound to group `finance-admins` |
+| Q6 | Check and grant deployment permissions to ServiceAccount |
+| Q7 | ClusterRole `deployment-manager` — full permissions on deployments + replicasets |
+| Q8 | ServiceAccount read-only access to ConfigMaps and Secrets cluster-wide |
+| Q9 | Role for pods, services, endpoints — bound to ServiceAccount `app-viewer` |
+| Q10 | Enforce create-but-not-delete pod permission for a user |
+| Q11 | Initialize Kubernetes cluster with kubeadm (pod CIDR, version, endpoint) |
+| Q12 | Generate kubeadm join command for worker node |
+| Q13 | Install Calico CNI and verify pod-to-pod communication |
+| Q14–Q15 | Bootstrap tokens — create, list, delete expired |
+| Q16 | kubeadm configuration file (custom CIDR, endpoint, version) |
+| Q17 | HA cluster with 3 control planes + HAProxy load balancer |
+| Q18 | Backup etcd with etcdctl snapshot save |
+| Q19 | Restore etcd from backup — update manifest, verify cluster |
+| Q20–Q22 | etcd member management: health check, remove failed, add new |
+| Q23 | Firewall ports for control plane and worker nodes |
+| Q24 | Verify containerd — service status, version, crictl, image pull |
+| Q25 | Configure kubelet (clusterDNS, clusterDomain, maxPods) |
+| Q26–Q27 | Verify prerequisites (swap, kernel modules, sysctl) + cgroup driver |
+| Q28–Q30 | Cluster upgrade v1.27 → v1.28: control plane + workers |
+| Q31–Q32 | Rollback failed worker upgrade; upgrade control plane only |
+| Q33–Q35 | Automated etcd backup script, DR test, verify backup without restoring |
+| Q36–Q37 | Change etcd data directory; remote backup with scp |
+
+### Troubleshooting *(NEW)*
+| File | Topic |
+|---|---|
+| Q138 | Debug Node `NotReady` — conditions, kubelet logs, runtime, disk |
+| Q139–Q140 | Pod logging: all patterns, previous crash, label selector, multi-container |
+| Q141 | Debug `CrashLoopBackOff` — logs, describe, exit codes, common causes |
+| Q142 | Kubelet not starting — certs, cgroup driver, config, swap |
+| Q143–Q145 | `kubectl top` — nodes, pods, containers; install metrics-server |
+| Q146–Q147 | OOMKilled — analyze and fix; deploy metrics-server for all nodes |
+| Q148–Q151 | Log streaming, multi-container logs, dual logging pod, missing logs debug |
+| Q152 | Systematically debug application not responding (7-layer checklist) |
+| Q153–Q158 | Stuck rollout, 503 errors, local-vs-k8s failure, pending pod, DB connectivity, intermittent |
+| Q159–Q166 | API server, scheduler, controller-manager, kubelet, CoreDNS, kube-proxy, etcd, certs |
+| Q167–Q174 | Cross-node networking, service LB, ingress 404, DNS failure, NodePort, NetworkPolicy, intermittent |
+| Q175–Q183 | Full stack debug, post-upgrade, high load, monitoring setup, secure namespace, migrate stateful app, cert expiry, Istio, DR drill |
+| Q184–Q190 | Cluster optimization, cloud PV provisioning, complex networking, custom scheduler, health check, eviction, Pod Security Standards |
