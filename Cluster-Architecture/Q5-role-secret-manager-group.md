@@ -9,39 +9,106 @@ In namespace `finance`:
 
 ## Solution
 
+This question introduces another excellent real-world scenario: managing sensitive resources (Secrets) and assigning permissions to a **Group** rather than a single user or robot.
+
+Here is how to explain this concept to your students, followed by the commands to solve it.
+
+## Part 1: The Theory (What's New)
+
+Let's adapt our "office building" analogy for these two new concepts.
+
+### 1. The Resource (`secrets`)
+
+* **What it is:** A Kubernetes Secret is an object that contains a small amount of sensitive data such as passwords, tokens, or SSH keys.
+* **The Analogy:** If Pods are filing cabinets, Secrets are the **company safes**. They require a much higher level of security clearance. Notice that the prompt asks for `create, update, delete` but *not* `get` or `list`. This is a common security pattern: an automated pipeline might be allowed to write or rotate passwords in the safe, but not read them!
+
+### 2. The Subject (`group`)
+
+* **What it is:** Instead of a `User` (one human) or a `ServiceAccount` (one application), a `Group` represents a collection of users defined by your identity provider (like Active Directory, Okta, or AWS IAM).
+* **The Analogy:** Instead of handing the job description to "John," we are handing it to a team alias, like "The Accounting Directors." Anyone who belongs to that team automatically inherits the permissions.
+
+---
+
+## Part 2: Step-by-Step Solution
+
+We can accomplish all of this quickly using imperative commands.
+
+### Step 1: Create the Namespace
+
+Ensure the `finance` department exists.
+
 ```bash
 kubectl create namespace finance
 
+```
+
+### Step 2: Create the Role
+
+Create the job description in the `finance` namespace that allows managing the safes.
+
+```bash
 kubectl create role secret-manager \
   --verb=create,update,delete \
   --resource=secrets \
   -n finance
 
-kubectl create rolebinding secret-manager-binding \
+```
+
+### Step 3: Create the RoleBinding
+
+Now, bind the role to the group. We don't have a specific name for the binding in the prompt, so we will call it `finance-admins-binding`.
+
+```bash
+kubectl create rolebinding finance-admins-binding \
   --role=secret-manager \
   --group=finance-admins \
   -n finance
+
 ```
 
-## Verify
+*(Remind the students: Notice we use `--group=` instead of `--user=` or `--serviceaccount=`. Kubernetes handles the rest!)*
+
+---
+
+## Part 3: How to Verify the Solution
+
+Testing group permissions with `kubectl auth can-i` requires a new trick. You must simulate a user, but also simulate that the user belongs to a specific group using the `--as-group` flag.
+
+**Test 1: Can a user in the group create a secret?**
 
 ```bash
-kubectl get role secret-manager -n finance
-kubectl get rolebinding secret-manager-binding -n finance
-
-# Test as a user in the finance-admins group
 kubectl auth can-i create secrets \
-  --as=alice@example.com \
+  --as=dummy-user \
   --as-group=finance-admins \
   -n finance
-# yes
 
+```
+
+*Expected Output: `yes*`
+
+**Test 2: Can a user in the group READ (get) a secret?**
+*(Since we only granted create, update, and delete, this should fail!)*
+
+```bash
 kubectl auth can-i get secrets \
-  --as=alice@example.com \
+  --as=dummy-user \
   --as-group=finance-admins \
   -n finance
-# no  (only create/update/delete was granted)
+
 ```
+
+*Expected Output: `no*`
+
+**Test 3: Does it fail if they aren't in the group?**
+
+```bash
+kubectl auth can-i create secrets \
+  --as=dummy-user \
+  -n finance
+
+```
+
+*Expected Output: `no*`
 
 ## Equivalent YAML
 
