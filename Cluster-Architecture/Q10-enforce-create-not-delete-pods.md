@@ -107,3 +107,10 @@ roleRef:
 - RBAC is **deny-by-default** — only explicitly listed verbs are allowed
 - There is no "deny" verb in RBAC — simply omit the verb you want to block
 - If the user also has `ClusterRoleBindings` or belongs to groups with more permissions, those take effect — RBAC is **additive**
+    - {Let's say you have a highly privileged user who belongs to the cluster-admins group. One day, you decide you want to restrict them to "read-only" access in the production namespace. You create a restrictive Role (get, list) and bind it to them in production.
+
+This will accomplish absolutely nothing.
+
+Because they still have the cluster-admins ClusterRoleBinding granting them full power everywhere, their new read-only badge is effectively useless. The powerful permission takes effect because RBAC is additive.
+
+To actually restrict them, you would have to completely remove their cluster-admin binding first, and then build them new, specific permissions from scratch.}
