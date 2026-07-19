@@ -53,12 +53,10 @@ kubectl auth can-i get pods \
   --as=system:serviceaccount:dev:dev-user -n dev
 # yes
 
-kubectl auth can-i get pods/log \
-  --as=system:serviceaccount:dev:dev-user -n dev
+kubectl auth can-i get pods --subresource=log --as=system:serviceaccount:dev:dev-user -n dev
 # yes
 
-kubectl auth can-i create pods/exec \
-  --as=system:serviceaccount:dev:dev-user -n dev
+kubectl auth can-i create pods --subresource=exec --as=system:serviceaccount:dev:dev-user -n dev
 # yes
 
 kubectl auth can-i delete pods \
