@@ -4,106 +4,122 @@
 Node reporting `NotReady`. Debug: check node conditions, kubelet logs, container runtime status, system resources (CPU/memory/disk).
 
 ---
+To demonstrate this effectively in a live Killercoda environment, you first need to intentionally break the cluster so your students have a realistic scenario to troubleshoot.
 
-## Phase 1: Identify the Problem
+The most reliable way to simulate a `NotReady` state without destroying the environment is to stop the `kubelet` service on the worker node. Here is the exact sequence to run for your demonstration, including the setup and the teaching track.
+
+1. **The Setup: Intentionally Break the Node:** Do this before or right at the start of the lesson.
+In a standard Killercoda Kubernetes playground, you will have a control plane (`controlplane`) and a worker node (`node01`). SSH into the worker node and stop the kubelet daemon.
+
+```bash
+# Connect to the worker node
+ssh node01
+
+# Stop the kubelet service to simulate a failure
+systemctl stop kubelet
+
+# Exit back to the control plane terminal
+exit
+
+```
+
+*Teaching note:* The Kubernetes controller manager takes about 40 seconds to realize the node has stopped reporting. You can use this time to introduce the topic to your students.
+
+
+2. **Show the Symptoms:** The Hook.
+Once the timeout period passes, show the students the current state of the cluster.
 
 ```bash
 kubectl get nodes
-# NAME       STATUS     ROLES    AGE
-# worker-1   NotReady   <none>   5d
+
 ```
 
----
+Point out that `node01` has transitioned to `NotReady`. Explain that when this happens, no new pods can be scheduled there, and existing pods might be evicted if the outage lasts longer than 5 minutes.
 
-## Phase 2: Check Node Conditions
+
+3. **Investigate from the API Server:** Control Plane Diagnostics.
+Walk your students through asking the cluster what it knows about the failure.
 
 ```bash
-kubectl describe node worker-1
+kubectl describe node node01
+
 ```
 
-Look at the `Conditions` section:
-```
-Conditions:
-  Type                Status  Reason
-  ----                ------  ------
-  MemoryPressure      False
-  DiskPressure        False
-  PIDPressure         False
-  Ready               False   KubeletNotReady  # ← The key condition
-```
+Tell the students to scroll to the **Conditions** section. Show them that the `Ready` condition has changed to `Unknown` and the reason states `NodeStatusUnknown`. Explain that this specific message almost always means the control plane can no longer communicate with the node's kubelet.
 
-Also check `Events` at the bottom for recent messages.
 
----
-
-## Phase 3: Check kubelet Logs (SSH to the Node)
+4. **Dive into the Worker Node:** Node-Level Diagnostics.
+Explain that since the API server can't reach the node, you must connect to the node directly to check system resources and services.
 
 ```bash
-ssh worker-1
+ssh node01
 
-# Check kubelet service status
-systemctl status kubelet
-# Active: activating (auto-restart) (Result: exit-code)
-
-# View recent kubelet logs
-journalctl -u kubelet -n 100 --no-pager
-# Look for errors like:
-#   "Unable to connect to Kubernetes API"
-#   "failed to create containerd task"
-#   "certificate has expired"
-#   "No space left on device"
 ```
 
----
-
-## Phase 4: Check Container Runtime
+Run through the resource checks quickly to rule them out:
 
 ```bash
-systemctl status containerd
-# If not running:
-systemctl restart containerd
-systemctl status containerd
-
-# Test crictl
-crictl ps
-# If it hangs — containerd socket issue
-```
-
----
-
-## Phase 5: Check System Resources
-
-```bash
-# CPU and memory
-top -bn1 | head -10
-free -h
-
-# Disk space (disk pressure evicts pods and causes NotReady)
+# Check if disk space is 100% full (simulate DiskPressure)
 df -h
-# If / or /var is >85%, clear space:
-crictl rmi --prune            # remove unused images
-journalctl --vacuum-size=500M # trim system logs
 
-# Check inode usage
-df -i | grep -v tmpfs
+# Check if memory is exhausted (simulate MemoryPressure)
+free -m
 
-# Check PIDs
-cat /proc/sys/kernel/pid_max
-ps aux | wc -l
 ```
 
----
+Since resources are healthy in this clean environment, guide them to the next logical culprit: the services.
 
-## Phase 6: Restart kubelet and Verify
+
+5. **Check Container Runtime and Kubelet:** The Root Cause.
+First, verify the container runtime is active.
 
 ```bash
-systemctl restart kubelet
-journalctl -u kubelet -f   # follow logs
+systemctl status containerd
 
-# On control plane:
-kubectl get nodes -w
-# worker-1   Ready   ...   ← should recover
 ```
+
+Show them it is running perfectly. Next, check the kubelet.
+
+```bash
+systemctl status kubelet
+
+```
+
+Point out the `Active: inactive (dead)` status. To show them how a real engineer verifies *why* it stopped, check the logs.
+
+```bash
+journalctl -u kubelet -n 20 --no-pager
+
+```
+
+
+6. **Fix the Issue and Verify:** The Resolution.
+Restart the service to resolve the simulated failure.
+
+```bash
+systemctl start kubelet
+
+# Verify it is running again
+systemctl status kubelet
+
+# Exit back to the control plane
+exit
+
+```
+
+Finally, prove to the students that the fix worked.
+
+```bash
+kubectl get nodes -w
+
+```
+
+The `-w` (watch) flag is great for demonstrations, as the students will see the exact moment `node01` flips from `NotReady` back to `Ready`.
+
+kubectl top node node01
+kubectl top pods -A
+
+top -b -n 1 | head -n 5
 
 ---
 
